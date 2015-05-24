@@ -33,3 +33,9 @@ int LZWDic::editString(int code, string str){
 	strings.at(code) = str;
 	return code;
 }
+
+void LZWDic::show(){
+	for(int i = 0; i < strings.size(); i++){
+		cout << strings.at(i) << endl;
+	}
+}
