@@ -5,8 +5,7 @@
  *      Author: up201304395
  */
 
-#ifndef INODE_H_
-#define INODE_H_
+#pragma once
 
 class INode {
 protected:
@@ -15,7 +14,7 @@ public:
 	int getFrequency(){return frequency;};
 	INode(int frequency);
 	INode(){this->frequency = 0;};
-	 bool operator< ( const INode &rhs) const;
+	bool operator< ( const INode &rhs) const;
 };
 
 class Node: public INode{
@@ -33,4 +32,4 @@ public:
 	LeafNode(char value, int frequency);
 };
 
-#endif /* INODE_H_ */
+

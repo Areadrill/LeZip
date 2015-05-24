@@ -7,6 +7,7 @@
 
 #include "INode.h"
 #include "HuffmanTree.h"
+#include "../common/bitstream.h"
 #include <sstream>
 INode::INode(int frequency) {
 	this->frequency = frequency;
@@ -31,4 +32,14 @@ int main(){
 	std::string ola = "olooaa";
 	std::stringstream stream(ola);
 	HuffmanTree tree = HuffmanTree(stream);
+	std::cout << "done";
+	bitstream str = bitstream(std::cout);
+	str << 0;
+	str << 0;
+	str << 0;
+	str << 0;
+	str << 1;
+	str << 0;
+	str << 0;
+	str << 0;
 }

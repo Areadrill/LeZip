@@ -21,6 +21,7 @@ private:
 
 public:
 	HuffmanTree(std::istream &is);
+
 };
 
 #endif /* HUFFMANTREE_H_ */
