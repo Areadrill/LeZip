@@ -13,6 +13,7 @@ public:
 	int getCode(string str);
 	int addString(string str);
 	int editString(int code, string str);
+	int getBitNum();
 	void show();
 };
 

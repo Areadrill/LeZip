@@ -1,9 +1,10 @@
 #include "LZWDic.h"
 #include <iostream>
+#include <cmath>
 
 
 LZWDic::LZWDic(){
-	for(int i = 32; i <= 126; i++){
+	for(int i = 0; i <= 255; i++){
 		string str = " ";
 		str.at(0) = (char)i;
 		this->addString(str);
@@ -38,4 +39,14 @@ void LZWDic::show(){
 	for(int i = 0; i < strings.size(); i++){
 		cout << strings.at(i) << endl;
 	}
+}
+
+int LZWDic::getBitNum(){
+	int power = 0;
+
+	while(pow(2, power) < this->strings.size()){
+		power++;
+	}
+
+	return power;
 }

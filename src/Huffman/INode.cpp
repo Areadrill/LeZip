@@ -28,7 +28,7 @@ LeafNode::LeafNode(char value, int frequency):INode(frequency){
 }
 
 
-int main(){
+/*int main(){
 	std::string ola = "olooaa";
 	std::stringstream stream(ola);
 	HuffmanTree tree = HuffmanTree(stream);
@@ -42,4 +42,4 @@ int main(){
 	str << 0;
 	str << 0;
 	str << 0;
-}
+}*/

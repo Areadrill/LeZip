@@ -8,6 +8,7 @@
 #include <vector>
 #include <iostream>
 #include <queue>
+#include <vector>
 
 class bitstream {
 private:
