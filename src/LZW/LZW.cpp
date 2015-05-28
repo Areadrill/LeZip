@@ -5,6 +5,7 @@
 #include <sstream>
 #include <cmath>
 #include <bitset>
+#include <string.h>
 
 using namespace std;
 

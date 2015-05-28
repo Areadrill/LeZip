@@ -14,32 +14,44 @@ INode::INode(int frequency) {
 }
 
  bool INode::operator<(const INode &rhs) const{
-	return (this->frequency < rhs.frequency);
+	return (this->frequency > rhs.frequency);
 }
+INode::~INode(){}
 
-Node::Node(INode left, INode right){
+Node::Node(INode *left, INode *right){
 	this->left = left;
 	this->right = right;
-	this->frequency = this->left.getFrequency() + this->right.getFrequency();
+	this->frequency = this->left->getFrequency() + this->right->getFrequency();
+}
+void Node::encodeChar(const char c, bitstream &bit, std::string prefix){
+	std::string codeleft = prefix;codeleft.append("0");
+	std::string coderight = prefix;coderight.append("1");
+	this->left->encodeChar(c, bit, codeleft);
+	this->right->encodeChar(c, bit, coderight);
+	//std::cout << "middle node with code " << prefix << std::endl;
 }
 
 LeafNode::LeafNode(char value, int frequency):INode(frequency){
 	this->value = value;
 }
 
+void LeafNode::encodeChar(const char c, bitstream &bit, std::string prefix){
+	if(this->value != c)
+		return;
+	std::cout << "matched " << this->value << " to prefix " << prefix << std::endl;
+	for(unsigned int i = 0; i < prefix.size();i++)
+	{
+		bool value = prefix.at(i) == '0' ? true : false;
+		bit << value;
+	}
 
-/*int main(){
-	std::string ola = "olooaa";
+}
+
+
+
+int main(){
+	std::string ola = "oloooa";
 	std::stringstream stream(ola);
 	HuffmanTree tree = HuffmanTree(stream);
-	std::cout << "done";
-	bitstream str = bitstream(std::cout);
-	str << 0;
-	str << 0;
-	str << 0;
-	str << 0;
-	str << 1;
-	str << 0;
-	str << 0;
-	str << 0;
-}*/
+	tree.encode(stream, std::cout);
+}

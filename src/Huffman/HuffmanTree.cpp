@@ -27,18 +27,33 @@ void HuffmanTree::initQueue(std::istream &is){
 	std::map<char,int>::const_iterator it;
 	for(it = dictionary.begin(); it != dictionary.end(); it++)
 	{
-		LeafNode leaf = LeafNode(it->first, it->second);
+		LeafNode *leaf = new LeafNode(it->first, it->second);
 		this->queue.push(leaf);
 	}
 }
 
 void HuffmanTree::buildTree(){
 	while(this->queue.size() > 1){
-		INode left = queue.top();queue.pop();
-		INode right = queue.top();queue.pop();
-		Node newNode = Node(left, right);
+		INode* left = queue.top();queue.pop();
+		INode* right = queue.top();queue.pop();
+		left->printValue(); right->printValue();
+		Node* newNode = new Node(left, right);
 		queue.push(newNode);
 	}
 	this->root = queue.top();
 	queue.pop();
+}
+
+void HuffmanTree::encode(std::istream &is, std::ostream &os){
+	bitstream bit = bitstream(os);
+	is.clear();
+	is.seekg(0);
+
+	while (!is.eof()){
+		char read;
+		is >> read;
+
+		this->root->encodeChar(read, bit);
+	}
+	bit.flush();
 }
