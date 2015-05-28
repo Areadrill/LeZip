@@ -7,6 +7,7 @@
 
 #pragma once
 #include "common/bitstream.h"
+#include <sstream>
 class INode {
 protected:
 	int frequency;
@@ -40,11 +41,10 @@ public:
 	void printValue(){std::cout << value;};
 };
 
-template<typename Type, typename Compare = std::less<Type> >
-struct nodeless : public std::binary_function<Type*, Type*, bool> {
-	bool operator()(const Type* lhs, const Type* rhs) const
-	{
-		return Compare()(*lhs, *rhs);
-	}
-}
-
+//Comparador para apontadores de INode
+//consultado em http://stackoverflow.com/questions/1517854/priority-queue-comparison-for-pointers
+template<typename T, typename C = std::less<T> >
+struct pless : public std::binary_function<T *, T *, bool> {
+    bool operator()(const T *x, const T *y) const
+        { return C()(*x, *y); }
+};

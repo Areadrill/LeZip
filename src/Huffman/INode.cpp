@@ -1,14 +1,7 @@
-/*
- * INode.cpp
- *
- *  Created on: May 21, 2015
- *      Author: up201304395
- */
-
 #include "INode.h"
 #include "HuffmanTree.h"
-#include "../common/bitstream.h"
-#include <sstream>
+
+#include <fstream>
 INode::INode(int frequency) {
 	this->frequency = frequency;
 }
@@ -50,8 +43,12 @@ void LeafNode::encodeChar(const char c, bitstream &bit, std::string prefix){
 
 
 int main(){
-	std::string ola = "oloooa";
-	std::stringstream stream(ola);
-	HuffmanTree tree = HuffmanTree(stream);
-	tree.encode(stream, std::cout);
+
+	std::ifstream in;
+	in.open("/usr/users2/mieic2013/up201304395/lezip/lusiadas.txt", std::ifstream::binary);
+	std::ofstream out;
+	out.open("out.txt", std::ofstream::binary);
+
+	HuffmanTree tree = HuffmanTree(in);
+	tree.encode(in, out);
 }

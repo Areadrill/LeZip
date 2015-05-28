@@ -10,20 +10,24 @@
 
 #include <queue>
 #include <iostream>
+#include <map>
 #include "INode.h"
 
 class HuffmanTree {
 private:
-	std::priority_queue<INode*> queue;
+	std::priority_queue<INode*, std::vector<INode*>, pless<INode> > queue;
 	INode* root;
 	void initQueue(std::istream &is);
 	void buildTree();
-public:
-	void encode(std::istream &is, std::ostream &os);
 
 public:
 	HuffmanTree(std::istream &is);
+	~HuffmanTree(){delete root;};
+	void encode(std::istream &is, std::ostream &os);
+
 
 };
+
+
 
 #endif /* HUFFMANTREE_H_ */
