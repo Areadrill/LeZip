@@ -5,15 +5,17 @@
 #include <sstream>
 #include <cmath>
 #include <bitset>
+#include <cstring>
 
 using namespace std;
 
 
-vector<bool> makeBinary(int num, LZWDic *dic){
+vector<int> makeBinary(int num, LZWDic *dic){
 	int bitNum = dic->getBitNum();
+	cout << bitNum << endl;
 	int sum = 0;
 
-	vector<bool> bits;
+	vector<int> bits;
 
 	int power = bitNum;
 	while((sum != num) || power >= 0){
@@ -64,7 +66,6 @@ int encode(string filename, LZWDic *dic){
 			if(j > 1){
 				i += j-2;
 			}
-			dic->addString(string.str());
 
 			//send to file
 			std::string fromStream = "                                                                                           ";
@@ -96,11 +97,14 @@ int encode(string filename, LZWDic *dic){
 			}
 
 
-			vector<bool> bits = makeBinary(code, dic);
+			vector<int> bits = makeBinary(code, dic);
 			for(int i = 0; i < dic->getBitNum();i++){
 				test << bits.front();
-				bits.pop_back();
+				//cout << bits.front();
+				bits.erase(bits.begin());
 			}
+
+			dic->addString(string.str());
 
 			string.str("");
 
@@ -109,12 +113,45 @@ int encode(string filename, LZWDic *dic){
 			}
 		}
 	}
+	test.flush();
 	cout << "finished" << endl;
 	outFile.close();
 	return 0;
 }
 
 
+int getCodeFromBin(vector<int> bits){
+
+}
+
+
 int decode(string filename){
 
+	LZWDic dic = LZWDic();
+
+
+	ifstream compressed(filename.c_str(), ios::in|ios::binary);
+	if(!compressed.is_open()){
+		return -1;
+	}
+	ofstream decompressed("decompressed.txt");
+	if(!decompressed.is_open()){
+		return -1;
+	}
+
+	char *testByte = new char[1];
+	vector<int> bits;
+
+	while(compressed){
+		compressed.read(testByte, 1);
+
+
+		if(bits.size() < dic.getBitNum()){
+
+		}
+		compressed.read(testByte, 1);
+		//cout << testByte << endl;
+		//getCodeFromBin('a');
+	}
+	compressed.clear();
 }

@@ -26,8 +26,11 @@ int main(int argc, char **argv){
 	str << 0;*/
 
 	LZWDic dic = LZWDic();
-	encode("lusiadas.txt", &dic);
+	//cout << dic.getBitNum() << endl;
 
+
+	encode("lusiadas.txt", &dic);
+	decode("lusiadas.txt.lzw");
 
 	/*int bits = dic.getBitNum();
 	cout << bits << endl;*/
