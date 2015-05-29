@@ -1,10 +1,26 @@
-#include <bitset>
 #include "bitstream.h"
 
-void bitstream::operator<<(bool rhs){
+void bitstream::operator<<(const bool rhs){
+
 	this->queue.push(rhs);
 	if (this->queue.size() == 8)
 		flush();
+}
+
+void bitstream::operator<<(const char rhs){
+	char copy = rhs;
+	for (int i = 0; i < 8; i++)
+	{
+		char extractor = 0x0001;
+		char in = extractor & copy;
+		copy <<= 1;
+		if (queue.size() < 8)
+			this->queue.push(in);
+		if (queue.size() == 8){
+			this->flush();
+			queue.push(in);
+		}
+	}
 }
 
 void bitstream::flush(){
@@ -22,3 +38,4 @@ void bitstream::flush(){
 	}
 	this->out << toFlush;
 }
+

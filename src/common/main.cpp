@@ -10,6 +10,7 @@
 
 using namespace std;
 
+
 int main(int argc, char **argv){
 	/*string ola = "olooaa";
 	stringstream stream(ola);
@@ -35,3 +36,4 @@ int main(int argc, char **argv){
 	/*int bits = dic.getBitNum();
 	cout << bits << endl;*/
 }
+

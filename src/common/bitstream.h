@@ -9,6 +9,7 @@
 #include <iostream>
 #include <queue>
 #include <vector>
+#include <bitset>
 
 class bitstream {
 private:
@@ -16,8 +17,10 @@ private:
 	std::ostream &out;
 public:
 	bitstream(std::ostream &os):out(os){};
-	void operator<<(bool rhs);
+	void operator<<(const bool rhs);
+	void operator<<(const char rhs);
 	void flush();
 };
+
 
 
