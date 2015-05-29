@@ -22,12 +22,15 @@ private:
 
 public:
 	HuffmanTree(std::istream &is);
+	HuffmanTree(INode* root):root(root){};
 	~HuffmanTree(){delete root;};
 	void encode(std::istream &is, std::ostream &os);
-
+	void saveTree(bitstream &bit);
+	static HuffmanTree loadTree(std::queue<bool> &bits);
+	static void decode(std::istream &is, std::ostream &os);
 
 };
-
+std::queue<bool> streamToQueue(std::istream &is);
 
 
 #endif /* HUFFMANTREE_H_ */
