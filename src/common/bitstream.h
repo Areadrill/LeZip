@@ -23,4 +23,4 @@ public:
 };
 
 
-
+std::queue<bool> streamToQueue(std::istream &is);

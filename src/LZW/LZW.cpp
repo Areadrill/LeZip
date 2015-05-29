@@ -47,7 +47,6 @@ void initDic(map<string, int> &dic){
 			string s = "";
 			s.push_back(c);
 			dic.insert(pair<string, int>(s,(int)c));
-			cout << (int)c << endl;
 		}
 }
 int encode(string filename,  string outfile="out.txt.lzw"){
@@ -76,26 +75,74 @@ int encode(string filename,  string outfile="out.txt.lzw"){
 		}
 		string out = string(s.begin()+curr, s.begin()+next-1);
 		lzwWrite(dictionary.find(out)->second, bit, dictionary.size());
+		cout << "adding " << currentString << " with size " << currentString.size() << endl;
 		dictionary.insert(pair<string, int>(currentString, dictionary.size()));
 		curr = next-1;
 		next = curr+1;
 	}
 
-
+	cout << "done\n";
+	bit.flush();
 	return 0;
 }
 
-
+int getNextCode(std::queue<bool> &bits, int currentBits){
+	int code = 0x0000;
+	for(int i = currentBits-1; i >= 0; i--){
+		if(bits.empty())
+		return 0;
+		int extracted = bits.front();bits.pop();
+		code |= (extracted << i);
+	}
+	cout << "code:" << code << endl;
+	return code;
+}
 
 int decode(string filename, string outputfile){
-	map<string, int> dictionary;
-	initDic(dictionary);
-
-	ifstream ifile(filename.c_str());
-	ofstream ofile(outputfile);
+	map<int, string> dic;
+	for(int i = 0; i < 256; i++){
+		string s = "";
+		s.push_back((char)i);
+		dic.insert(pair<int,string>(i,s));
+	}
+	ifstream ifile(filename, ifstream::binary);
+	ofstream ofile(outputfile, ofstream::binary);
 	if(!ifile.is_open() || !ofile.is_open())
 		return -1;
 
+	queue<bool> bits;
+	bits = streamToQueue(ifile);
+	int x = 1;
+	string s="", temp="";
 
+	int code = getNextCode(bits, 8);
+	s = dic.find(code)->second;
+	ofile << s;
 
+	while(!bits.empty()){
+		int currentBits = ceil(log2(dic.size()+1));
+		x=0;
+		code = getNextCode(bits, currentBits);
+
+		if(dic.find(code) != dic.end()){
+			cout << "encontrou"<< dic.find(code)->second << endl;
+			temp = s;
+			s = dic.find(code)->second;
+
+			string newEntry = 	temp;
+			newEntry.push_back(s[0]);
+			cout << "added " << newEntry << endl;
+			dic.insert(pair<int, string>(dic.size(), newEntry));
+		}
+		else{
+			cout << "nao encontrou" << endl;
+			string newEntry = s;
+			newEntry.push_back(s.at(0));
+			cout << "added " << newEntry << endl;
+			dic.insert(pair<int, string>(dic.size(), newEntry));
+			s = dic.find(code)->second;
+		}
+		ofile << s;
+		cout << currentBits << endl;
+	}
 }

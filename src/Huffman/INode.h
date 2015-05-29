@@ -6,7 +6,7 @@
  */
 
 #pragma once
-#include "common/bitstream.h"
+#include "../common/bitstream.h"
 #include <sstream>
 class INode {
 protected:

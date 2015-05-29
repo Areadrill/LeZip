@@ -30,7 +30,6 @@ public:
 	static void decode(std::istream &is, std::ostream &os);
 
 };
-std::queue<bool> streamToQueue(std::istream &is);
 
 
 #endif /* HUFFMANTREE_H_ */

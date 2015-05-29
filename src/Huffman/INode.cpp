@@ -108,7 +108,7 @@ char LeafNode::decodeValue(std::queue<bool> &bits){
 }
 
 
-int main(){
+/*int main(){
 	std::string ola = "sem à dita de Aquiles por ele inveja por ela que nao era de aquiles mas do Sr julio";
 	std::istringstream in(ola);
 	std::ifstream lusiadas("lusiadas.txt", std::ifstream::binary);
@@ -128,4 +128,4 @@ int main(){
 
 	HuffmanTree::decode(result, std::cout);
 
-}
+}*/

@@ -40,24 +40,7 @@ void HuffmanTree::buildTree(){
 }
 
 
-std::queue<bool> streamToQueue(std::istream &is){
-	std::queue<bool> result;
-	std::istreambuf_iterator<char> eos;
-	std::string s(std::istreambuf_iterator<char>(is), eos);
-	char extractor = 0x80;
-	char read;
-	for(unsigned int i = 0; i < s.size(); i++){
-		read = s.at(i);
-		for (int i = 0; i <8; i++)
-		{
-			char in = extractor & read;
-			bool bit = !in ? false : true;
-			result.push(bit);
-			read <<= 1;
-		}
-	}
-	return result;
-}
+
 
 void HuffmanTree::saveTree(bitstream &bit){
 	this->root->saveNode(bit);
