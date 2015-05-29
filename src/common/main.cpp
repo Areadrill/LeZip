@@ -29,7 +29,7 @@ int main(int argc, char **argv){
 	//cout << dic.getBitNum() << endl;
 
 
-	encode("lusiadas.txt", &dic);
+	encode("lusiadas.txt", "escrevamlusiadas.txt.lzw");
 	decode("lusiadas.txt.lzw");
 
 	/*int bits = dic.getBitNum();

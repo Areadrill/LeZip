@@ -6,6 +6,9 @@
 #include <cmath>
 #include <bitset>
 #include <cstring>
+#include <map>
+#include <string>
+
 
 using namespace std;
 
@@ -31,9 +34,17 @@ vector<int> makeBinary(int num, LZWDic *dic){
 	return bits;
 }
 
+void lzwWrite(int number, bitstream &bit, int max){
+	int size = ceil(log2(max));
+	char extractor = 0x01;
+	for (int i = size-1; i >= 0; i--){
+		bool bits = (extractor << i) & number;
+		bit << bits;
+	}
+}
 
-int encode(string filename, LZWDic *dic){
-	ifstream inFile(filename.c_str());
+int encode(string filename,  string outfile="out.txt.lzw"){
+	/*ifstream inFile(filename.c_str());
 	stringstream outName;
 	outName << filename << ".lzw";
 	ofstream outFile(outName.str().c_str(), (ios::out|ios::binary));
@@ -48,9 +59,47 @@ int encode(string filename, LZWDic *dic){
 		cout << "Output file didnt open";
 		return -1;
 	}
+*/
 
-	string temp;
-	stringstream string;
+
+
+	map<string, int> dictionary;
+	for(int c = 0; c < 256; c++)
+	{
+		string s = "";
+		s.push_back(c);
+		dictionary.insert(pair<string, int>(s,(int)c));
+		cout << (int)c << endl;
+	}
+
+	ifstream infile;
+	infile.open(filename.c_str(), ifstream::binary);
+	if (!infile.is_open())
+		return -1;
+	ofstream ofile;
+	ofile.open(outfile.c_str(), ofstream::trunc | ofstream::binary);
+	bitstream bit = bitstream(ofile);
+
+
+	istreambuf_iterator<char> eos;
+	string s = string(istreambuf_iterator<char>(infile), eos);
+	unsigned int curr = 0;
+	unsigned int next = 1;
+	while(curr < s.size()){
+		string currentString = string(s.begin()+curr, s.begin()+next);
+		while (dictionary.find(currentString) != dictionary.end()){
+			next++;
+			currentString = string(s.begin()+curr, s.begin()+next);
+		}
+		string out = string(s.begin()+curr, s.begin()+next-1);
+		lzwWrite(dictionary.find(out)->second, bit, dictionary.size());
+		dictionary.insert(pair<string, int>(currentString, dictionary.size()));
+		curr = next-1;
+		next = next-1;
+	}
+
+	/*string temp;
+	ostringstream string;
 	while(getline(inFile, temp)){
 		int j;
 		for(int i = 0; i < temp.size(); i++){
@@ -103,7 +152,7 @@ int encode(string filename, LZWDic *dic){
 				//cout << bits.front();
 				bits.erase(bits.begin());
 			}
-
+			cout << "added " << string.str() << std::endl;
 			dic->addString(string.str());
 
 			string.str("");
@@ -115,14 +164,10 @@ int encode(string filename, LZWDic *dic){
 	}
 	test.flush();
 	cout << "finished" << endl;
-	outFile.close();
+	outFile.close();*/
 	return 0;
 }
 
-
-int getCodeFromBin(vector<int> bits){
-
-}
 
 
 int decode(string filename){
