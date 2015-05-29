@@ -30,7 +30,7 @@ int main(int argc, char **argv){
 
 
 	encode("lusiadas.txt", "escrevamlusiadas.txt.lzw");
-	decode("lusiadas.txt.lzw");
+	decode("escrevamlusiadas.txt.lzw", "ja me lembrei ja me esqueci.txt");
 
 	/*int bits = dic.getBitNum();
 	cout << bits << endl;*/
