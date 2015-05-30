@@ -1,5 +1,4 @@
 #include <iostream>
-#include "LZWDic.h"
 #include "../common/bitstream.h"
 #include <fstream>
 #include <sstream>
@@ -12,26 +11,6 @@
 using namespace std;
 
 
-vector<int> makeBinary(int num, LZWDic *dic){
-	int bitNum = dic->getBitNum();
-	cout << bitNum << endl;
-	int sum = 0;
-
-	vector<int> bits;
-
-	int power = bitNum;
-	while((sum != num) || power >= 0){
-		if(pow(2, power) > num-sum){
-			bits.push_back(0);
-		}
-		else{
-			bits.push_back(1);
-			sum += pow(2, power);
-		}
-		power--;
-	}
-	return bits;
-}
 
 void lzwWrite(int number, bitstream &bit, int max){
 	int size = ceil(log2(max));
@@ -112,7 +91,6 @@ int decode(string filename, string outputfile){
 
 	queue<bool> bits;
 	bits = streamToQueue(ifile);
-	int x = 1;
 	string s="", temp="";
 
 	int code = getNextCode(bits, 8);
@@ -121,28 +99,26 @@ int decode(string filename, string outputfile){
 
 	while(!bits.empty()){
 		int currentBits = ceil(log2(dic.size()+1));
-		x=0;
 		code = getNextCode(bits, currentBits);
 
 		if(dic.find(code) != dic.end()){
-			cout << "encontrou"<< dic.find(code)->second << endl;
+
 			temp = s;
 			s = dic.find(code)->second;
 
 			string newEntry = 	temp;
 			newEntry.push_back(s[0]);
-			cout << "added " << newEntry << endl;
+
 			dic.insert(pair<int, string>(dic.size(), newEntry));
 		}
 		else{
-			cout << "nao encontrou" << endl;
 			string newEntry = s;
 			newEntry.push_back(s.at(0));
-			cout << "added " << newEntry << endl;
 			dic.insert(pair<int, string>(dic.size(), newEntry));
 			s = dic.find(code)->second;
 		}
 		ofile << s;
 		cout << currentBits << endl;
 	}
+	return 0;
 }
