@@ -53,13 +53,13 @@ int LZWencode(string filename,  string outfile="out.txt.lzw"){
 		}
 		string out = string(s.begin()+curr, s.begin()+next-1);
 		lzwWrite(dictionary.find(out)->second, bit, dictionary.size());
-		cout << "adding " << currentString << " with size " << currentString.size() << endl;
+		//cout << "adding " << currentString << " with size " << currentString.size() << endl;
 		dictionary.insert(pair<string, int>(currentString, dictionary.size()));
 		curr = next-1;
 		next = curr+1;
 	}
 
-	cout << "done\n";
+	//cout << "done\n";
 	bit.flush();
 	return 0;
 }
@@ -72,7 +72,7 @@ int getNextCode(std::queue<bool> &bits, int currentBits){
 		int extracted = bits.front();bits.pop();
 		code |= (extracted << i);
 	}
-	cout << "code:" << code << endl;
+	//cout << "code:" << code << endl;
 	return code;
 }
 
@@ -103,24 +103,24 @@ int LZWdecode(string filename, string outputfile){
 		code = getNextCode(bits, currentBits);
 
 		if(dic.find(code) != dic.end()){
-			cout << "encontrou"<< dic.find(code)->second << endl;
+			//cout << "encontrou"<< dic.find(code)->second << endl;
 			temp = s;
 			s = dic.find(code)->second;
 
 			string newEntry = 	temp;
 			newEntry.push_back(s[0]);
-			cout << "added " << newEntry << endl;
+			//cout << "added " << newEntry << endl;
 			dic.insert(pair<int, string>(dic.size(), newEntry));
 		}
 		else{
-			cout << "nao encontrou" << endl;
+			//cout << "nao encontrou" << endl;
 			string newEntry = s;
 			newEntry.push_back(s.at(0));
-			cout << "added " << newEntry << endl;
+			//cout << "added " << newEntry << endl;
 			dic.insert(pair<int, string>(dic.size(), newEntry));
 			s = dic.find(code)->second;
 		}
 		ofile << s;
-		cout << currentBits << endl;
+		//cout << currentBits << endl;
 	}
 }

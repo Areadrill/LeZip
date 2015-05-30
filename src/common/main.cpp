@@ -23,10 +23,8 @@ void printTutorial(){
 }
 
 
-int compress(DIR *dir, string srcDir, string alg, string name){
+int compress(DIR *dir, string srcDir, string destDir, string alg, string name){
 
-	string destDir = srcDir;
-	destDir.append(".comp");
 	mkdir(destDir.c_str());
 
 	struct dirent *foldEnt;
@@ -55,12 +53,29 @@ int compress(DIR *dir, string srcDir, string alg, string name){
 				return -1;
 			}
 		}
+		else if(foldEnt->d_type == 16){
+			if(strcmp(foldEnt->d_name, ".") && strcmp(foldEnt->d_name, "..")){
+				string newSrcDir = srcDir;
+				newSrcDir.append("/");
+				newSrcDir.append(foldEnt->d_name);
+
+				string newDestDir = destDir;
+				newDestDir.append("/");
+				newDestDir.append(foldEnt->d_name);
+				newDestDir.append(".comp");
+
+				DIR *dir = opendir(newSrcDir.c_str());
+				compress(dir, newSrcDir, newDestDir, alg, name);
+				closedir(dir);
+			}
+		}
 	}
+	cout << "done";
 	return 1;
 }
 
-int decompress(DIR *dir, string srcDir){
-	string destDir = string(srcDir.begin(), srcDir.end()-5);
+int decompress(DIR *dir, string srcDir, string destDir){
+
 	mkdir(destDir.c_str());
 	struct dirent *foldEnt;
 
@@ -71,8 +86,6 @@ int decompress(DIR *dir, string srcDir){
 
 		string fileName2 = destDir;
 		fileName2.append("/");
-
-		cout << fileName << endl << fileName2 << endl;
 
 		if(foldEnt->d_type == 0){
 			for(int i = strlen(foldEnt->d_name); i > 0; i--){
@@ -86,7 +99,6 @@ int decompress(DIR *dir, string srcDir){
 						if(foldEnt->d_name[i+1] == 'l'){
 							fileName2.append(foldEnt->d_name);
 							fileName2.at(fileName2.size()-3) = '\0';
-							cout << fileName2 << endl;
 
 							LZWdecode(fileName, fileName2);
 							break;
@@ -97,6 +109,23 @@ int decompress(DIR *dir, string srcDir){
 						}
 					}
 				}
+			}
+		}
+		else if(foldEnt->d_type == 16){
+			if(strcmp(foldEnt->d_name, ".") && strcmp(foldEnt->d_name, "..")){
+				string newSrcDir = srcDir;
+				newSrcDir.append("/");
+				newSrcDir.append(foldEnt->d_name);
+
+				string derp = foldEnt->d_name;
+
+				string newDestDir = destDir;
+				newDestDir.append("/");
+				newDestDir.append(string(derp.begin(), derp.end()-5));
+
+				DIR *dir = opendir(newSrcDir.c_str());
+				decompress(dir, newSrcDir, newDestDir);
+				closedir(dir);
 			}
 		}
 	}
@@ -135,17 +164,29 @@ int main(int argc, char **argv){
 		printUsage(argv[0]);
 		return -1;
 	}
+
 	if(dir == NULL){
 		cout << "Error: directory not found\n";
 		return -1;
 	}
 
-	if(!strcmp(argv[1], "-c"))
-		compress(dir, argv[3], argv[2], argv[0]);
-	else if(!strcmp(argv[1], "-d"))
-		decompress(dir, argv[2]);
+
+	if(!strcmp(argv[1], "-c")){
+		string destDir = argv[3];
+		destDir.append(".comp");
+		compress(dir, argv[3], destDir, argv[2], argv[0]);
+	}
+
+	else if(!strcmp(argv[1], "-d")){
+		string srcDir = argv[2];
+		string destDir = string(srcDir.begin(), srcDir.end()-5);
+		decompress(dir, srcDir, destDir);
+	}
+
 	else
 		printUsage(argv[0]);
+
+	closedir(dir);
 
 }
 
