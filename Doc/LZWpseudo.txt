@@ -1,0 +1,65 @@
+procedure LZWEncode(inStream, outStream)
+
+for i <-- 0 until 256 step 1 do
+	dictionary.insert(i, (char of i))
+
+s <-- inStream
+
+curr <-- 0
+next <-- 1
+
+while curr < s.size do
+	currString <-- substring(s.begin+curr, s.begin + next)
+
+	while dictionary.find(currString) = true do
+		next <-- next + 1
+		currString <-- substring(s.begin+curr, s.begin + next)
+
+	output <-- substring(s.begin+curr, s.begin + next-1)
+	outStream <-- output
+	
+	dictionary.insert(currString, dictionary.size)
+	
+	curr <-- next - 1
+	next <-- curr + 1
+
+end procedure
+
+
+procedure LZWDecode(inStream outStream)
+
+for i = 0 until 256 step 1 do
+	dictionary.insert((char of i), i)
+
+bits <-- inStream
+
+s <-- ''
+temp <-- ''
+
+numOfBits <-- ceil(log2(dictionary.size()+1))
+code <-- getNextcode(bits, numOfBits)
+s <-- dictionary.find(code)
+outStream <-- s
+
+while bits.empty = false do
+	numOfBits <-- ceil(log2(dictionary.size()+1))
+	code <-- getNextcode(bits, numOfBits)
+	
+	if dictionary.find(code) != dictionary.end do
+		temp <-- s
+		s <-- dictionary.find(code)
+		newEntry <-- temp
+	else do
+		newEntry <-- s
+
+	newEntry <-- newEntry + s[0]
+	dic.insert(dictionary.size, newEntry)
+	outStream <-- s
+
+
+
+
+
+		
+
+	
