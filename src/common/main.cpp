@@ -1,7 +1,12 @@
+#ifdef __unix__
+#include <sys/stat.h>
+#endif
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <dirent.h>
+#include <string.h>
 
 #include "bitstream.h"
 #include "../LZW/LZWDic.h"
@@ -25,7 +30,12 @@ void printTutorial(){
 
 int compress(DIR *dir, string srcDir, string destDir, string alg, string name){
 
+#ifdef __unix__
+	mkdir(destDir.c_str(), 0777);
+#else
 	mkdir(destDir.c_str());
+#endif
+
 
 	struct dirent *foldEnt;
 	while((foldEnt = readdir(dir)) != NULL){
@@ -76,7 +86,12 @@ int compress(DIR *dir, string srcDir, string destDir, string alg, string name){
 
 int decompress(DIR *dir, string srcDir, string destDir){
 
+#ifdef __unix__
+	mkdir(destDir.c_str(), 0777);
+#else
 	mkdir(destDir.c_str());
+#endif
+
 	struct dirent *foldEnt;
 
 	while((foldEnt = readdir(dir)) != NULL){
