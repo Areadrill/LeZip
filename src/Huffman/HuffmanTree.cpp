@@ -1,6 +1,7 @@
 #include "HuffmanTree.h"
 #include "INode.h"
 #include <iomanip>
+#include <fstream>
 
 HuffmanTree::HuffmanTree(std::istream &is) {
 	initQueue(is);
@@ -19,6 +20,12 @@ void HuffmanTree::initQueue(std::istream &is){
 
 
 	}
+	for(std::map<char, int >::const_iterator it = dictionary.begin();
+	    it != dictionary.end(); ++it)
+	{
+	    std::cout << it->first << " " << it->second << " " << it->second << "\n";
+	}
+
 	std::map<char,int>::const_iterator it;
 	for(it = dictionary.begin(); it != dictionary.end(); it++)
 	{
@@ -31,6 +38,7 @@ void HuffmanTree::buildTree(){
 	while(this->queue.size() > 1){
 		INode* left = queue.top();queue.pop();
 		INode* right = queue.top();queue.pop();
+		std::ofstream out;
 		//left->printValue(); right->printValue();
 		Node* newNode = new Node(left, right);
 		queue.push(newNode);
@@ -66,7 +74,7 @@ void HuffmanTree::encode(std::istream &is, std::ostream &os){
 void HuffmanTree::decode(std::istream &is, std::ostream &os){
 	std::queue<bool> bits = streamToQueue(is);
 	HuffmanTree huff = HuffmanTree::loadTree(bits);
-	std::cout << "begining to decode";
+
 	while(!bits.empty()){
 
 		os << huff.root->decodeValue(bits);

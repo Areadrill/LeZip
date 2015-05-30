@@ -73,7 +73,7 @@ char Node::decodeValue(std::queue<bool> &bits){
 
 LeafNode::LeafNode(char value, int frequency):INode(frequency){
 	this->value = value;
-	std::cout << "arrived at leaf " << value << std::endl;
+
 }
 
 void LeafNode::encodeChar(const char c, bitstream &bit, std::string prefix){
@@ -86,7 +86,8 @@ void LeafNode::encodeChar(const char c, bitstream &bit, std::string prefix){
 		bit << value;
 		//std::cout << "inserting " << value << std::endl;
 	}
-	//std::cout << "done coding " << this->value << std::endl;
+
+
 
 }
 
@@ -111,13 +112,14 @@ char LeafNode::decodeValue(std::queue<bool> &bits){
 /*int main(){
 	std::string ola = "sem à dita de Aquiles por ele inveja por ela que nao era de aquiles mas do Sr julio";
 	std::istringstream in(ola);
-	std::ifstream lusiadas("lusiadas.txt", std::ifstream::binary);
+	std::ifstream lusiadas("jas.pdf", std::ifstream::binary);
 	std::ofstream out;
 	out.open("out.txt", std::ofstream::trunc);
 
 	HuffmanTree tree = HuffmanTree(lusiadas);
 	tree.encode(lusiadas, out);
 	out.close();
+	lusiadas.close();
 	std::ifstream result;
 	result.open("out.txt", std::ifstream::binary);
 	result.clear();
@@ -125,7 +127,7 @@ char LeafNode::decodeValue(std::queue<bool> &bits){
 	if(!result.is_open())
 		std::cout << "erro" << std::endl;
 
-
-	HuffmanTree::decode(result, std::cout);
+	std::ofstream file("jas2.pdf");
+	HuffmanTree::decode(result, file);
 
 }*/
