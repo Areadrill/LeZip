@@ -11,28 +11,6 @@
 
 using namespace std;
 
-
-vector<int> makeBinary(int num, LZWDic *dic){
-	int bitNum = dic->getBitNum();
-	cout << bitNum << endl;
-	int sum = 0;
-
-	vector<int> bits;
-
-	int power = bitNum;
-	while((sum != num) || power >= 0){
-		if(pow(2, power) > num-sum){
-			bits.push_back(0);
-		}
-		else{
-			bits.push_back(1);
-			sum += pow(2, power);
-		}
-		power--;
-	}
-	return bits;
-}
-
 void lzwWrite(int number, bitstream &bit, int max){
 	int size = ceil(log2(max));
 	char extractor = 0x01;
@@ -49,7 +27,7 @@ void initDic(map<string, int> &dic){
 			dic.insert(pair<string, int>(s,(int)c));
 		}
 }
-int encode(string filename,  string outfile="out.txt.lzw"){
+int LZWencode(string filename,  string outfile="out.txt.lzw"){
 
 	map<string, int> dictionary;
 	initDic(dictionary);
@@ -98,15 +76,15 @@ int getNextCode(std::queue<bool> &bits, int currentBits){
 	return code;
 }
 
-int decode(string filename, string outputfile){
+int LZWdecode(string filename, string outputfile){
 	map<int, string> dic;
 	for(int i = 0; i < 256; i++){
 		string s = "";
 		s.push_back((char)i);
 		dic.insert(pair<int,string>(i,s));
 	}
-	ifstream ifile(filename, ifstream::binary);
-	ofstream ofile(outputfile, ofstream::binary);
+	ifstream ifile(filename.c_str(), ifstream::binary);
+	ofstream ofile(outputfile.c_str(), ofstream::binary);
 	if(!ifile.is_open() || !ofile.is_open())
 		return -1;
 

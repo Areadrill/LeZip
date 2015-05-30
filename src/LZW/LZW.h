@@ -1,5 +1,4 @@
-#include <string>
 
-int encode(std::string filename, string outfile="out.txt.lzw");
-vector<bool> makeBinary(int num, LZWDic *dic);
-int decode(std::string filename, std::string ofile);
+
+int LZWencode(std::string filename, std::string outfile="out.txt.lzw");
+int LZWdecode(std::string filename, std::string ofile);
