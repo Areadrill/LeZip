@@ -53,7 +53,7 @@ void Node::encodeChar(const char c, bitstream &bit, std::string prefix){
 }
 void Node::saveNode(bitstream & os){
 	os << false;
-	std::cout << "0";
+	//std::cout << "0";
 	this->left->saveNode(os);
 	this->right->saveNode(os);
 
@@ -99,7 +99,7 @@ void LeafNode::saveNode(bitstream &os){
 		bool bit = extractor & copy;
 		os << bit;
 	}
-	std::cout << "1" << this->value;
+	//std::cout << "1" << this->value;
 }
 
 char LeafNode::decodeValue(std::queue<bool> &bits){

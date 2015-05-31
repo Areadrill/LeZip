@@ -85,8 +85,8 @@ void HuffmanTree::decode(std::istream &is, std::ostream &os){
 }
 
 int huffmanEncode(std::string infile, std::string outfile){
-	std::ofstream ofile(outfile, std::ofstream::binary | std::ofstream::trunc);
-	std::ifstream ifile(infile, std::ofstream::binary);
+	std::ofstream ofile(outfile.c_str(), std::ofstream::binary | std::ofstream::trunc);
+	std::ifstream ifile(infile.c_str(), std::ofstream::binary);
 	if(!ofile.is_open() || !ifile.is_open()){
 		return -1;
 	}
@@ -98,8 +98,8 @@ int huffmanEncode(std::string infile, std::string outfile){
 }
 
 int huffmanDecode(std::string infile, std::string outfile){
-	std::ofstream ofile(outfile, std::ofstream::binary | std::ofstream::trunc);
-	std::ifstream ifile(infile, std::ofstream::binary);
+	std::ofstream ofile(outfile.c_str(), std::ofstream::binary | std::ofstream::trunc);
+	std::ifstream ifile(infile.c_str(), std::ofstream::binary);
 	if(!ofile.is_open() || !ifile.is_open()){
 			return -1;
 	}
