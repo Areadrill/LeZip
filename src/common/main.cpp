@@ -88,7 +88,6 @@ int compress(DIR *dir, string srcDir, string destDir, string alg, string name){
 			}
 		}
 	}
-	cout << "done";
 	return 1;
 }
 
@@ -117,7 +116,7 @@ int decompress(DIR *dir, string srcDir, string destDir){
 					if(i == strlen(foldEnt->d_name)-5){
 						fileName2.append(foldEnt->d_name);
 						fileName2.at(fileName2.size() - 4) = '\0';
-						cout << fileName << endl << fileName2 << endl;
+						//cout << fileName << endl << fileName2 << endl;
 						if(huffmanDecode(fileName, fileName2)){
 							cout << "erro ao abrir o ficheiro pretendido" << endl;
 							return -1;
@@ -216,7 +215,7 @@ int main(int argc, char **argv){
 		printUsage(argv[0]);
 
 	closedir(dir);
-
+	cout << "Opearation Complete.\n";
 }
 
 

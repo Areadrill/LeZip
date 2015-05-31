@@ -24,7 +24,7 @@ void HuffmanTree::initQueue(std::istream &is){
 	for(std::map<char, int >::const_iterator it = dictionary.begin();
 	    it != dictionary.end(); ++it)
 	{
-	    std::cout << it->first << " " << it->second << " " << it->second << "\n";
+	    //std::cout << it->first << " " << it->second << " " << it->second << "\n";
 	}
 
 	std::map<char,int>::const_iterator it;
