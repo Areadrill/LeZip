@@ -1,16 +1,8 @@
-/*
- * HuffmanTree.h
- *
- *  Created on: May 21, 2015
- *      Author: up201304395
- */
-
-#ifndef HUFFMANTREE_H_
-#define HUFFMANTREE_H_
-
+#pragma once
 #include <queue>
 #include <iostream>
 #include <map>
+#include <fstream>
 #include "INode.h"
 
 class HuffmanTree {
@@ -32,4 +24,5 @@ public:
 };
 
 
-#endif /* HUFFMANTREE_H_ */
+int huffmanEncode(std::string infile, std::string outfile);
+int huffmanDecode(std::string infile, std::string outfile);

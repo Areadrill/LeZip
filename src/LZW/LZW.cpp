@@ -10,8 +10,6 @@
 
 using namespace std;
 
-
-
 void lzwWrite(int number, bitstream &bit, int max){
 	int size = ceil(log2(max));
 	char extractor = 0x01;
@@ -28,7 +26,7 @@ void initDic(map<string, int> &dic){
 			dic.insert(pair<string, int>(s,(int)c));
 		}
 }
-int encode(string filename,  string outfile="out.txt.lzw"){
+int LZWencode(string filename,  string outfile="out.txt.lzw"){
 
 	map<string, int> dictionary;
 	initDic(dictionary);
@@ -54,13 +52,13 @@ int encode(string filename,  string outfile="out.txt.lzw"){
 		}
 		string out = string(s.begin()+curr, s.begin()+next-1);
 		lzwWrite(dictionary.find(out)->second, bit, dictionary.size());
-		cout << "adding " << currentString << " with size " << currentString.size() << endl;
+		//cout << "adding " << currentString << " with size " << currentString.size() << endl;
 		dictionary.insert(pair<string, int>(currentString, dictionary.size()));
 		curr = next-1;
 		next = curr+1;
 	}
 
-	cout << "done\n";
+	//cout << "done\n";
 	bit.flush();
 	return 0;
 }
@@ -73,19 +71,19 @@ int getNextCode(std::queue<bool> &bits, int currentBits){
 		int extracted = bits.front();bits.pop();
 		code |= (extracted << i);
 	}
-	cout << "code:" << code << endl;
+	//cout << "code:" << code << endl;
 	return code;
 }
 
-int decode(string filename, string outputfile){
+int LZWdecode(string filename, string outputfile){
 	map<int, string> dic;
 	for(int i = 0; i < 256; i++){
 		string s = "";
 		s.push_back((char)i);
 		dic.insert(pair<int,string>(i,s));
 	}
-	ifstream ifile(filename, ifstream::binary);
-	ofstream ofile(outputfile, ofstream::binary);
+	ifstream ifile(filename.c_str(), ifstream::binary);
+	ofstream ofile(outputfile.c_str(), ofstream::binary);
 	if(!ifile.is_open() || !ofile.is_open())
 		return -1;
 
@@ -102,13 +100,11 @@ int decode(string filename, string outputfile){
 		code = getNextCode(bits, currentBits);
 
 		if(dic.find(code) != dic.end()){
-
 			temp = s;
 			s = dic.find(code)->second;
 
 			string newEntry = 	temp;
 			newEntry.push_back(s[0]);
-
 			dic.insert(pair<int, string>(dic.size(), newEntry));
 		}
 		else{
@@ -118,7 +114,7 @@ int decode(string filename, string outputfile){
 			s = dic.find(code)->second;
 		}
 		ofile << s;
-		cout << currentBits << endl;
+		//cout << currentBits << endl;
 	}
 	return 0;
 }
