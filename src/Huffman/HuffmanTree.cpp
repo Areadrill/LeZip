@@ -21,7 +21,11 @@ void HuffmanTree::initQueue(std::istream &is){
 
 
 	}
-
+	for(std::map<char, int >::const_iterator it = dictionary.begin();
+	    it != dictionary.end(); ++it)
+	{
+	    std::cout << it->first << " " << it->second << " " << it->second << "\n";
+	}
 
 	std::map<char,int>::const_iterator it;
 	for(it = dictionary.begin(); it != dictionary.end(); it++)
@@ -61,7 +65,7 @@ void HuffmanTree::encode(std::istream &is, std::ostream &os){
 	is.seekg(0);
 	this->saveTree(bit);
 	char read;
-	cache cache;
+	std::map<char, std::queue<bool> > cache;
 	while (is >> std::noskipws >> read){
 		if(cache.find(read) == cache.end())
 			this->root->encodeChar(read, bit,"", cache);
@@ -113,3 +117,15 @@ int huffmanDecode(std::string infile, std::string outfile){
 	ifile.close();
 	return 0;
 }
+/*int main()
+{
+	time_t start = time(NULL);
+	//LZWencode("/home/joao/Documents/lezip/lusiadas.txt", "/home/joao/Documents/lezip/merda.txt");
+	//LZWdecode("/home/joao/Documents/lezip/merda.txt", "/home/joao/Documents/lezip/lusiadas3.txt");
+	time_t end = time(NULL) - start;
+	start = time(NULL);
+	huffmanEncode("lusiadas.txt", "merda.txt");
+	huffmanDecode("merda.txt", "lusiadas3.txt");
+	end = time(NULL) - start;
+	std::cout << end;
+}*/

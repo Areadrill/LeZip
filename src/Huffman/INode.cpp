@@ -44,7 +44,7 @@ Node::Node(INode *left, INode *right){
 	this->right = right;
 	this->frequency = this->left->getFrequency() + this->right->getFrequency();
 }
-void Node::encodeChar(const char c, bitstream &bit, std::string prefix, cache &cache){
+void Node::encodeChar(const char c, bitstream &bit, std::string prefix, std::map<char, std::queue<bool> > &cache){
 	std::string codeleft = prefix;codeleft.append("0");
 	std::string coderight = prefix;coderight.append("1");
 	this->left->encodeChar(c, bit, codeleft, cache);
@@ -76,7 +76,7 @@ LeafNode::LeafNode(char value, int frequency):INode(frequency){
 
 }
 
-void LeafNode::encodeChar(const char c, bitstream &bit, std::string prefix, cache &cache){
+void LeafNode::encodeChar(const char c, bitstream &bit, std::string prefix, std::map<char, std::queue<bool> > &cache){
 	if(this->value != c)
 		return;
 	std::queue<bool> code;
