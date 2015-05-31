@@ -199,6 +199,14 @@ int main(int argc, char **argv){
 	}
 
 
+	if(!strcmp(argv[2], "-rle")){
+		cout << "WARNING: The Run-Length-Encoding algorithm implemented is unfinished.\n " <<
+				"It has only been proven to work on text files.\n" <<
+				"It is not recommended that you use it on important files.\n" <<
+				"Press ENTER to proceed or CTRL+C to quit now.\n";
+		cin.get();
+	}
+
 	if(!strcmp(argv[1], "-c")){
 		string destDir = argv[3];
 		destDir.append(".comp");
@@ -208,6 +216,7 @@ int main(int argc, char **argv){
 	else if(!strcmp(argv[1], "-d")){
 		string srcDir = argv[2];
 		string destDir = string(srcDir.begin(), srcDir.end()-5);
+		destDir.append(".decomp");
 		decompress(dir, srcDir, destDir);
 	}
 
