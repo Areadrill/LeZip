@@ -1,6 +1,7 @@
 #include "HuffmanTree.h"
 #include "INode.h"
 #include <iomanip>
+#include <fstream>
 
 HuffmanTree::HuffmanTree(std::istream &is) {
 	initQueue(is);
@@ -74,5 +75,30 @@ void HuffmanTree::decode(std::istream &is, std::ostream &os){
 	}
 
 
+}
+
+int huffmanEncode(std::string infile, std::string outfile){
+	std::ofstream ofile(outfile, std::ofstream::binary | std::ofstream::trunc);
+	std::ifstream ifile(infile, std::ofstream::binary);
+	if(!ofile.is_open() || !ifile.is_open()){
+		return -1;
+	}
+	HuffmanTree huf(ifile);
+	huf.encode(ifile, ofile);
+	ifile.close();
+	ofile.close();
+	return 0;
+}
+
+int huffmanDecode(std::string infile, std::string outfile){
+	std::ofstream ofile(outfile, std::ofstream::binary | std::ofstream::trunc);
+	std::ifstream ifile(infile, std::ofstream::binary);
+	if(!ofile.is_open() || !ifile.is_open()){
+			return -1;
+	}
+	HuffmanTree::decode(ifile, ofile);
+	ofile.close();
+	ifile.close();
+	return 0;
 }
 

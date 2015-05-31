@@ -50,7 +50,10 @@ int compress(DIR *dir, string srcDir, string destDir, string alg, string name){
 			fileName2.append(".lzw");
 
 			if(alg == "-huff"){
-				//huffencode
+				if(huffmanEncode(fileName, fileName2)){
+					cout << "erro ao abrir o ficheiro pretendido" << endl;
+					return -1;
+				}
 			}
 			else if(alg == "-lzw"){
 				LZWencode(fileName, fileName2);
@@ -103,12 +106,14 @@ int decompress(DIR *dir, string srcDir, string destDir){
 		fileName2.append("/");
 
 		if(foldEnt->d_type == 0){
-			for(int i = strlen(foldEnt->d_name); i > 0; i--){
+			for(unsigned int i = strlen(foldEnt->d_name); i > 0; i--){
 
 				if(foldEnt->d_name[i] == '.'){
 					if(i == strlen(foldEnt->d_name)-5){
-						//huffdecode
-						break;
+						if(huffmanDecode(fileName, fileName2)){
+							cout << "erro ao abrir o ficheiro pretendido" << endl;
+							return -1;
+						}
 					}
 					else if(i == strlen(foldEnt->d_name) - 4){
 						if(foldEnt->d_name[i+1] == 'l'){
@@ -144,6 +149,7 @@ int decompress(DIR *dir, string srcDir, string destDir){
 			}
 		}
 	}
+	return 0;
 }
 
 int main(int argc, char **argv){
