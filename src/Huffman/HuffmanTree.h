@@ -8,6 +8,7 @@
 class HuffmanTree {
 private:
 	std::priority_queue<INode*, std::vector<INode*>, pless<INode> > queue;
+	std::map<char, std::queue<bool> > codecache;
 	INode* root;
 	void initQueue(std::istream &is);
 	void buildTree();

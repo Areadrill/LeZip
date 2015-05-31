@@ -2,6 +2,7 @@
 #include "INode.h"
 #include <iomanip>
 #include <fstream>
+#include "../LZW/LZW.h"
 
 HuffmanTree::HuffmanTree(std::istream &is) {
 	initQueue(is);
@@ -64,9 +65,17 @@ void HuffmanTree::encode(std::istream &is, std::ostream &os){
 	is.seekg(0);
 	this->saveTree(bit);
 	char read;
+	std::map<char, std::queue<bool> > cache;
 	while (is >> std::noskipws >> read){
-		//std::cout << "gonna incode " << read << std::endl;
-		this->root->encodeChar(read, bit);
+		if(cache.find(read) == cache.end())
+			this->root->encodeChar(read, bit,"", cache);
+		else{
+			std::queue<bool> code = cache.find(read)->second;
+			while(!code.empty()){
+				bit << code.front();
+				code.pop();
+			}
+		}
 	}
 	bit.flush();
 }
@@ -108,4 +117,15 @@ int huffmanDecode(std::string infile, std::string outfile){
 	ifile.close();
 	return 0;
 }
-
+/*int main()
+{
+	time_t start = time(NULL);
+	//LZWencode("/home/joao/Documents/lezip/lusiadas.txt", "/home/joao/Documents/lezip/merda.txt");
+	//LZWdecode("/home/joao/Documents/lezip/merda.txt", "/home/joao/Documents/lezip/lusiadas3.txt");
+	time_t end = time(NULL) - start;
+	start = time(NULL);
+	huffmanEncode("lusiadas.txt", "merda.txt");
+	huffmanDecode("merda.txt", "lusiadas3.txt");
+	end = time(NULL) - start;
+	std::cout << end;
+}*/

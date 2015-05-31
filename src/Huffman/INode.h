@@ -8,6 +8,8 @@
 #pragma once
 #include "../common/bitstream.h"
 #include <sstream>
+#include <map>
+typedef std::map<char, std::queue<bool> > cache_code;
 class INode {
 protected:
 	int frequency;
@@ -16,7 +18,7 @@ public:
 	INode(int frequency);
 	INode(){this->frequency = 0;};
 	bool operator< ( const INode &rhs) const;
-	virtual void encodeChar (const char c, bitstream &bit, std::string prefix = "") = 0;
+	virtual void encodeChar (const char c, bitstream &bit, std::string prefix, cache_code & cache) = 0;
 	virtual ~INode() = 0;
 	virtual void printValue() = 0;
 	virtual void saveNode( bitstream &os) = 0;
@@ -32,7 +34,7 @@ public:
 	Node(INode* left, INode* right);
 	Node(){right = NULL;left=NULL;};
 	~Node(){delete left; delete right;};
-	void encodeChar (const char c, bitstream &bit, std::string prefix = "");
+	void encodeChar (const char c, bitstream &bit, std::string prefix, cache_code & chache);
 	void printValue(){};
 	void saveNode( bitstream &os);
 	void setRight(INode* right){this->right = right;};
@@ -44,7 +46,7 @@ private:
 	char value;
 public:
 	LeafNode(char value, int frequency);
-	void encodeChar (const char c, bitstream &bit, std::string prefix = "");
+	void encodeChar (const char c, bitstream &bit, std::string prefix, std::map<char, std::queue<bool> > &cache);
 	~LeafNode(){};
 	void printValue(){std::cout << value;};
 	void saveNode( bitstream &os);

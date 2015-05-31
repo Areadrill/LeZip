@@ -44,11 +44,11 @@ Node::Node(INode *left, INode *right){
 	this->right = right;
 	this->frequency = this->left->getFrequency() + this->right->getFrequency();
 }
-void Node::encodeChar(const char c, bitstream &bit, std::string prefix){
+void Node::encodeChar(const char c, bitstream &bit, std::string prefix, std::map<char, std::queue<bool> > &cache){
 	std::string codeleft = prefix;codeleft.append("0");
 	std::string coderight = prefix;coderight.append("1");
-	this->left->encodeChar(c, bit, codeleft);
-	this->right->encodeChar(c, bit, coderight);
+	this->left->encodeChar(c, bit, codeleft, cache);
+	this->right->encodeChar(c, bit, coderight,cache);
 	//std::cout << "middle node with code " << prefix << std::endl;
 }
 void Node::saveNode(bitstream & os){
@@ -76,19 +76,17 @@ LeafNode::LeafNode(char value, int frequency):INode(frequency){
 
 }
 
-void LeafNode::encodeChar(const char c, bitstream &bit, std::string prefix){
+void LeafNode::encodeChar(const char c, bitstream &bit, std::string prefix, std::map<char, std::queue<bool> > &cache){
 	if(this->value != c)
 		return;
-	//std::cout << "coding " << this->value << std::endl;
+	std::queue<bool> code;
 	for(unsigned int i = 0; i < prefix.size();i++)
 	{
 		bool value = prefix.at(i) == '0' ? true : false;
 		bit << value;
-		//std::cout << "inserting " << value << std::endl;
+		code.push(value);
 	}
-
-
-
+	cache.insert(std::pair<char, std::queue<bool> >(c, code));
 }
 
 void LeafNode::saveNode(bitstream &os){
