@@ -3,8 +3,8 @@
 #include <fstream>
 #include <sstream>
 
-float compress(const char *fname, const char *cname);
-void decompress(const char *fname, const char *uname);
+float rlecompress(const char *fname, const char *cname);
+void rledecompress(const char *fname, const char *uname);
 
 
 

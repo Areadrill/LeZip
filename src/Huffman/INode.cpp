@@ -107,27 +107,3 @@ char LeafNode::decodeValue(std::queue<bool> &bits){
 	return this->value;
 
 }
-
-
-/*int main(){
-	std::string ola = "sem à dita de Aquiles por ele inveja por ela que nao era de aquiles mas do Sr julio";
-	std::istringstream in(ola);
-	std::ifstream lusiadas("jas.pdf", std::ifstream::binary);
-	std::ofstream out;
-	out.open("out.txt", std::ofstream::trunc);
-
-	HuffmanTree tree = HuffmanTree(lusiadas);
-	tree.encode(lusiadas, out);
-	out.close();
-	lusiadas.close();
-	std::ifstream result;
-	result.open("out.txt", std::ifstream::binary);
-	result.clear();
-	result.seekg(0);
-	if(!result.is_open())
-		std::cout << "erro" << std::endl;
-
-	std::ofstream file("jas2.pdf");
-	HuffmanTree::decode(result, file);
-
-}*/

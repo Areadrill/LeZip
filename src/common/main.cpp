@@ -12,6 +12,7 @@
 #include "../LZW/LZW.h"
 #include "../Huffman/HuffmanTree.h"
 #include "../Huffman/INode.h"
+#include "../RLE/RLE.h"
 
 using namespace std;
 
@@ -58,7 +59,7 @@ int compress(DIR *dir, string srcDir, string destDir, string alg, string name){
 				LZWencode(fileName, fileName2);
 			}
 			else if(alg == "-rle"){
-				//rleEncode
+				rlecompress(fileName.c_str(), fileName2.c_str());
 			}
 			else{
 				printUsage(name);
@@ -123,7 +124,7 @@ int decompress(DIR *dir, string srcDir, string destDir){
 							break;
 						}
 						else if(foldEnt->d_name[i+1] == 'r'){
-							//rleDecode
+							rledecompress(fileName.c_str(), fileName2.c_str());
 							break;
 						}
 					}
@@ -209,4 +210,5 @@ int main(int argc, char **argv){
 	closedir(dir);
 
 }
+
 

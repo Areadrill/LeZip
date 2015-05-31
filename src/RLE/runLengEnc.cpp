@@ -2,7 +2,7 @@
 using namespace std;
 
 
-float compress(const char *fname, const char *cname)
+float rlecompress(const char *fname, const char *cname)
 {
     fstream file;
     fstream compressed;
@@ -51,7 +51,7 @@ float compress(const char *fname, const char *cname)
     return (write_pos / float(fsize));
 }
 
-void decompress(const char *fname, const char *uname)
+void rledecompress(const char *fname, const char *uname)
 {
     fstream file;
     fstream ufile;
