@@ -7,6 +7,7 @@
 #include <sstream>
 #include <dirent.h>
 #include <string.h>
+#include <chrono>
 
 #include "bitstream.h"
 #include "../LZW/LZW.h"
@@ -15,6 +16,8 @@
 #include "../RLE/RLE.h"
 
 using namespace std;
+using namespace std::chrono;
+
 
 void printUsage(string name){
 	cout << "Usage: \n\tCompression: " << name << " -c [compression algorithm] [directory]" << endl;
@@ -226,5 +229,48 @@ int main(int argc, char **argv){
 	closedir(dir);
 	cout << "Opearation Complete.\n";
 }
+
+std::string generateRandomString(int size, char range){
+	std::string result = "";
+	for(int i = 0; i < size; i++){
+		char random = (rand() % (int)(range + 1));
+		result.push_back(random);
+	}
+	return result;
+}
+/*int main(){
+	//lzw
+	//LZWencode("tests/doc.pdf","tests/doc.pdf.lzw");
+	//LZWencode("tests/duck.bmp","tests/duck.bmp.lzw");
+	//LZWencode("tests/flux.exe","tests/flux.exe.lzw");
+	//LZWencode("tests/lusiadas.txt","tests/lusiadas.txt.lzw");
+	//LZWencode("tests/musica.mp3","tests/musica.mp3.lzw");
+	//LZWencode("tests/musica.wav","tests/musica.wav.lzw");
+	//std::cout << "done lzw\n";
+	//huffmanEncode("tests/doc.pdf","tests/doc.pdf.huf");
+	//huffmanEncode("tests/duck.bmp","tests/duck.bmp.huf");
+	//huffmanEncode("tests/flux.exe","tests/flux.exe.huf");
+	//huffmanEncode("tests/lusiadas.txt","tests/lusiadas.txt.huf");
+	//huffmanEncode("tests/musica.mp3","tests/musica.mp3.huf");
+	//huffmanEncode("tests/musica.wav","tests/musica.wav.huf");
+	//std::cout << "done huffman\n";
+
+	//rlecompress("tests/lusiadas.txt","tests/lusiadas.txt.rle");
+	std::ofstream lzw("rle_time.txt", ofstream::trunc);
+	for(int i = 100; i < 4000000; i = i+100000 ){
+		std::ofstream file("test.txt", ofstream::binary | ofstream::trunc);
+
+		file << generateRandomString(i, 250);
+		file.close();
+		high_resolution_clock::time_point t1 = high_resolution_clock::now();
+		rlecompress("test.txt", "dump.txt");
+	    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+	    auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+	    lzw << i << "," << duration << endl;
+	    cout << "done for " << i << endl;
+	}
+
+
+}*/
 
 
