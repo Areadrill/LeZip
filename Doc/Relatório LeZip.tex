@@ -17,8 +17,8 @@
 \let\biconditional\leftrightarrow
 \begin{document}
 
-\title{Relatório do Trabalho de Conceção e Análise de Algoritmos}
-\date{27 de abril 2015}
+\title{Relatório do Segundo Trabalho de Conceção e Análise de Algoritmos}
+\date{1 de junho de 2015}
 \author{Francisco Veiga, up201201604@fe.up.pt
  \and João Cabral, up201304395@fe.up.pt
  \and  João Mota, up201303462@fe.up.pt\linebreak
@@ -26,6 +26,7 @@
 %\input{./title_page_1.tex}
 \maketitle
 \tableofcontents
+\newpage
 \listoffigures
 \listoftables
 \newpage
@@ -38,7 +39,9 @@ Para o presente trabalho foi pedida a conceção de um programa de compressão, 
 
 
 \section{Casos de Utilização}
-Está implementada a funcionalidade que permite ao utilizador passar uma pasta ao programa e escolher o algoritmo de compressão desejado. O programa irá prontamente gerar uma pasta semelhante com os ficheiros comprimidos. O mesmo programa poderá também executar a operação inversa, gerando uma pasta semelhante à primeira.
+Está implementada a funcionalidade que permite ao utilizador passar uma pasta ao programa e escolher o algoritmo de compressão desejado. O programa irá gerar uma pasta semelhante com os ficheiros comprimidos. O mesmo programa poderá também executar a operação inversa, gerando uma pasta semelhante à original.
+\newline
+É de realçar que o algoritmo \emph{Run Length Encoding} apenas se encontra funcional para a compressão de texto, obtendo resultados errados para outros tipos de ficheiros.
 
 \newpage
 \section{Formalização do problema}
@@ -76,7 +79,7 @@ O principio deste algoritmo é simples, quando temos a ocorrência de uma repeti
 Neste caso temos que distinguir se o algarismo já estava presente no texto ou se foi introduzido pela codificação. Assim se usarmos por exemplo um carácter especial podemos identificar o início da codificação por exemplo *7B. \newline
 Esta técnica só é eficiente se a sequência tiver um tamanho maior de 3, além disso o carácter especial não pode ser um dos caracteres que ocorrem no texto.
 \subsection{Compressão de textos}
-Para a compressão de textos este método não é muito eficiente. Por exemplo, na Europa não é muito comum as repetições de três ou mais  letras. Repetições de 4 caracteres iguais só ocorreriam em tabelas, quadros, ou com caracteres especiais (final de linha, espaços, tabulações, etc).
+Para a compressão de textos este método não é muito eficiente. Por exemplo, na Europa não são muito comuns as repetições de três ou mais  letras. Repetições de 4 caracteres iguais só ocorreriam em tabelas, quadros, ou com caracteres especiais tais como os finais de linha, espaços e tabulações.
 \subsection{Compressão de imagens}
 Na compressão de imagens esta técnica é mais promissora pois imagens apresentam maiores áreas continuas da mesma cor.
 \subsection{Codificação}
@@ -175,21 +178,38 @@ Huffman   & 87.76\%  & 55.30\%  & 117.18\%    & 72.30\%  & 118.08\%  \\ \cmidrul
 LZW       & 48.32\%  & 36.65\%  & 116.71\%    & 43.37\%  & 117.67\%  \\ \bottomrule
 \end{tabular}
 }
-\caption{Compressão obtida por cada algoritmo implementado sobre diferentes tipos de ficheiros}
-\label{my-label}
+\caption{Compressão obtida por cada algoritmo implementado sobre diferentes tipos de ficheiros}label{my-label}
 \end{table}
-\newpage
+Por apenas se encontrar funcional para a compressão de ficheiros de texto, onde apresenta uma taxa de compressão quase irrelevante, o algoritmo \emph{Run Length Encoding} não foi incluído nesta análise.
 \subsection{Tempo de execução}
-Para efetuar uma análisem empírica do tempo de execução de cada programa foram gerados ficheiros aleatórios com tamanhos progressivamente maiores e medidos os respetivos tempos de execução. Os resultados obtidos foram representados sob a forma dos gráficos das figuras \ref{f:1} e \ref{f:2}.
+Para efetuar uma análise empírica do tempo de execução de cada programa foram gerados ficheiros aleatórios com tamanhos progressivamente maiores e medidos os respetivos tempos de execução. Os resultados obtidos foram representados sob a forma dos gráficos das figuras \ref{f:1}, \ref{f:2} e \ref{f:3}.\newline
 \begin{figure}
 \includegraphics{huff.pdf}
-\caption{Variação da performance do algoritmo de compressão usando codificação de Huffman em função do tamanho da mensagem a codificar.}
+\caption{Variação da performance do algoritmo de compressão usando codificação de \emph{Huffman} em função do tamanho da mensagem a codificar.}
 \label{f:1}
 \end{figure}
 \begin{figure}
 \includegraphics{lzw.pdf}
-\caption{Variação da performance do algoritmo de compressão usando LZW em função do tamanho da mensagem a codificar.}
+\caption{Variação da performance do algoritmo de compressão usando \emph{LZW} em função do tamanho da mensagem a codificar.}
 \label{f:2}
 \end{figure}
-Os resultados da análise empírica parecem confirmar os resultados obtidos na análise teórica efetuada na secção \ref{Análise de Complexidade} da página \pageref{Análise de Complexidade}, aumentando de forma \emph{quasilinear} com o tamanho da mensagem a codificar.
+\begin{figure}
+\includegraphics{rle.pdf}
+\caption{Variação da performance do algoritmo de compressão usando \emph{RLE} em função do tamanho da mensagem a codificar.}
+\label{f:3}
+\end{figure}
+Os resultados da análise empírica parecem confirmar os resultados obtidos na análise teórica efetuada na secção \ref{Análise de Complexidade} da página \pageref{Análise de Complexidade}, aumentando de forma \emph{quasilinear}, no caso do \emph{LZW} e \emph{Huffman} e linear no caso do \emph{RLE} com o tamanho da mensagem a codificar.
+
+\section{Considerações sobre a realização do trabalho}
+\subsection{Principais dificuldades sentidas}
+A principal dificuldade sentida na realização prendeu-se com um problema no algoritmo \emph{Run Length Encoding}
+\subsection{Contribuição dos elementos do grupo}
+Todos os membros contribuíram para o trabalho, desenvolvendo funcionalidades do programa, bem como colaborando na formalização matemática do problema, na implementação de algoritmos, na descrição da solução e na análise empírica dos tempos de execução.
+\begin{description}
+\item[Francisco Veiga] Implementou do algoritmo \emph{Run Length Encoding} e escreveu a sua descrição para o relatório.;
+\item[João Cabral] Implementou o algoritmo de \emph{Huffman}, colaborou na implementação do \emph{LZW} e elaborou o presente relatório.
+\item[João Mota] Implementou o algoritmo \emph{LZW}, colaborou na implementação do \emph{Huffman} e escreveu o pseudocódigo presente neste relatório a respeito do mesmo. Implementou a interface do utilizador com o programa.
+
+\end{description}
+
 \end{document}
