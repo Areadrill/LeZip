@@ -7,7 +7,7 @@
 #include <sstream>
 #include <dirent.h>
 #include <string.h>
-#include <chrono>
+//#include <chrono>
 
 #include "bitstream.h"
 #include "../LZW/LZW.h"
@@ -16,7 +16,7 @@
 #include "../RLE/RLE.h"
 
 using namespace std;
-using namespace std::chrono;
+//using namespace std::chrono;
 
 
 void printUsage(string name){
@@ -42,7 +42,7 @@ int compress(DIR *dir, string srcDir, string destDir, string alg, string name){
 
 	struct dirent *foldEnt;
 	while((foldEnt = readdir(dir)) != NULL){
-		if(foldEnt->d_type == 0){
+		if(foldEnt->d_type == 8){
 			string fileName = srcDir;
 			fileName.append("/");
 			fileName.append(foldEnt->d_name);
@@ -74,7 +74,7 @@ int compress(DIR *dir, string srcDir, string destDir, string alg, string name){
 				return -1;
 			}
 		}
-		else if(foldEnt->d_type == 16){
+		else if(foldEnt->d_type == 4){
 			if(strcmp(foldEnt->d_name, ".") && strcmp(foldEnt->d_name, "..")){
 				string newSrcDir = srcDir;
 				newSrcDir.append("/");
@@ -112,13 +112,13 @@ int decompress(DIR *dir, string srcDir, string destDir){
 		string fileName2 = destDir;
 		fileName2.append("/");
 
-		if(foldEnt->d_type == 0){
+		if(foldEnt->d_type == 8){
 			for(unsigned int i = strlen(foldEnt->d_name); i > 0; i--){
 
 				if(foldEnt->d_name[i] == '.'){
 					if(i == strlen(foldEnt->d_name)-5){
 						fileName2.append(foldEnt->d_name);
-						fileName2.at(fileName2.size() - 4) = '\0';
+						fileName2.at(fileName2.size() - 5) = '\0';
 						//cout << fileName << endl << fileName2 << endl;
 						if(huffmanDecode(fileName, fileName2)){
 							cout << "erro ao abrir o ficheiro pretendido" << endl;
@@ -141,7 +141,7 @@ int decompress(DIR *dir, string srcDir, string destDir){
 				}
 			}
 		}
-		else if(foldEnt->d_type == 16){
+		else if(foldEnt->d_type == 4){
 			if(strcmp(foldEnt->d_name, ".") && strcmp(foldEnt->d_name, "..")){
 				string newSrcDir = srcDir;
 				newSrcDir.append("/");
@@ -230,14 +230,6 @@ int main(int argc, char **argv){
 	cout << "Opearation Complete.\n";
 }
 
-std::string generateRandomString(int size, char range){
-	std::string result = "";
-	for(int i = 0; i < size; i++){
-		char random = (rand() % (int)(range + 1));
-		result.push_back(random);
-	}
-	return result;
-}
 /*int main(){
 	//lzw
 	//LZWencode("tests/doc.pdf","tests/doc.pdf.lzw");
