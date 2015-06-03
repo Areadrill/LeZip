@@ -128,7 +128,7 @@ int decompress(DIR *dir, string srcDir, string destDir){
 					else if(i == strlen(foldEnt->d_name) - 4){
 						if(foldEnt->d_name[i+1] == 'l'){
 							fileName2.append(foldEnt->d_name);
-							fileName2.at(fileName2.size()-3) = '\0';
+							fileName2.at(fileName2.size()-4) = '\0';
 
 							LZWdecode(fileName, fileName2);
 							break;
